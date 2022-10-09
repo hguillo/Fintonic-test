@@ -11,10 +11,6 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.insertProduct = (req, res, next) => {
-  if(!req.body.name) {
-    return res.status(400).send({error: "Name is required"});
-  }
-
   const product = new Product({
     name: req.body.name,
     description: req.body.description
