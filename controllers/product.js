@@ -3,7 +3,7 @@ const Product = require('../models/product');
 exports.getProducts = (req, res, next) => {
   Product.find()
     .then(products => {
-      res.json(products);
+      return res.json(products);
     })
     .catch(err => {
       console.log(err);
@@ -17,7 +17,7 @@ exports.insertProduct = (req, res, next) => {
   });
 
   product.save().then(prod => {
-    res.status(200).send();
+    return res.status(200).send();
   })
   .catch((err) => {
     console.log(err);
@@ -25,15 +25,14 @@ exports.insertProduct = (req, res, next) => {
 };
 
 exports.deleteProduct = (req, res, next) => {
-  if(!req.body.productId) {
-    return res.status(400).send({error: "Field 'productId' is required"});
-  }
-
   const prodId = req.body.productId;
 
   Product.deleteOne({_id: prodId})
     .then(() => {
-      res.status(200).send();
+      return res.status(200).send();
     })
-    .catch(err => console.log(err));
+    .catch((err) => {
+      console.log(err)
+      return res.status(404).send({error: "Product not found"});
+    });
 };
